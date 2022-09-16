@@ -182,8 +182,6 @@ mBLUE = (68, 89, 142)
 chooselist = [0]
 choose = chooselist[0]
 auto = False
-#test = pygame.image.load('1.gif')
-#testrect = test.get_rect()
 
 leftb = pygame.image.load('left.jpg').convert_alpha()
 rightb = pygame.image.load('right.jpg').convert_alpha()
@@ -205,24 +203,24 @@ while 1:
             sys.exit()
 
         if left_button.draw(screen):
-            if choose == 0 :
+            if choose == chooselist[0] :
                 choose = 1
-            elif choose == 1 :
+            elif choose == chooselist[1] :
                 choose = 0
         elif right_button.draw(screen):
-            if choose == 0 :
+            if choose == chooselist[0] :
                 choose = 1
-            elif choose == 1 :
+            elif choose == chooselist[1] :
                 choose = 0
 
-        if choose == 0 :
+        if choose == chooselist[0] :
             if play_button.is_pressed(mouse_pos, mouse_pressed):
                 auto = False
                 player.bangani()
                 bang.play()
                 score_value += 1
             
-        elif choose == 1 :
+        elif choose == chooselist[1] :
              if play_button.is_pressed(mouse_pos, mouse_pressed):
                 auto = False
                 player2.anoneani()
@@ -241,7 +239,7 @@ while 1:
     if auto :
         loop()			
 
-    if score_value >= 69:
+    if score_value >= 10:
         chooselist=[0, 1]
 
     screen.fill(color)
