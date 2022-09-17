@@ -79,6 +79,47 @@ class Player2(pygame.sprite.Sprite):
 
         self.image = self.sprites[int(self.current_sprite)]
 
+class Player3(pygame.sprite.Sprite):
+    def __init__(self, pos_x, pos_y):
+        super().__init__()
+        self.ani3 = False
+        self.sprites = []
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-0.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-1.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-2.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-3.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-4.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-5.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-6.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-7.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-8.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-9.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-10.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-11.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-12.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-13.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-14.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-15.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-16.png'))
+        self.sprites.append(pygame.image.load('ani3/nyanpasu crop-17.png'))
+        self.current_sprite = 0
+        self.image = self.sprites[self.current_sprite]
+
+        self.rect = self.image.get_rect()
+        self.rect.topleft = [pos_x,pos_y]
+
+    def nyanani(self):
+        self.ani3 = True
+
+    def update(self,speed):
+        if self.ani3 == True:
+            self.current_sprite += speed
+            if int(self.current_sprite) >= len(self.sprites):
+                self.current_sprite = 0
+                self.ani3 = False
+
+        self.image = self.sprites[int(self.current_sprite)]
+
 class Button:
     def __init__ ( self, x, y, width, height, fg, bg, content, fontsize):
         self.font = pygame.font.Font('MTO Grunge Sans.ttf', fontsize)
@@ -148,6 +189,9 @@ def loop():
     if choose == 1:
         player2.anoneani()
         anone.play()
+    if choose == 2:
+        player3.nyanani()
+        nyan.play()
 
 moving_sprites = pygame.sprite.Group()
 player = Player(110, 80 )
@@ -157,17 +201,23 @@ moving_sprites2 = pygame.sprite.Group()
 player2 = Player2(110, 80 )
 moving_sprites2.add(player2)
 
+moving_sprites3 = pygame.sprite.Group()
+player3 = Player3(130, 80 )
+moving_sprites3.add(player3)
+
 logo = pygame.image.load('logo bang.jpg')
 pygame.display.set_icon(logo)
 
 clock = pygame.time.Clock()
-pygame.display.set_caption("Bangg")
+pygame.display.set_caption("Bangg!!")
 size = screen_width, screen_height = 705, 500
 color = 151, 190, 182
 screen=pygame.display.set_mode((screen_width, screen_height))
 
 anone = pygame.mixer.Sound('anone anoneee.mp3')
 bang = pygame.mixer.Sound('bang.mp3')
+nyan = pygame.mixer.Sound('nyanpasu.mp3')
+
 score_value = 0
 font = pygame.font.Font('MTO Grunge Sans.ttf', 50)
 textX = 265
@@ -190,7 +240,9 @@ left_button = Button2(25, 220, leftb, 0.8)
 right_button = Button2(630, 220, rightb, 0.8)
 
 while 1:
-    play_button = Button(285, 430, 150, 50, WHITE, mBLUE, 'BANGG!', 40)
+
+    size = len(chooselist)
+    play_button = Button(285, 430, 150, 50, WHITE, mBLUE, 'PLEASE!!', 40)
     replay_button = Button(120, 430, 100, 50, WHITE, mBLUE, 'AUTO', 40)	
     breplay_button = Button(120, 430, 100, 50, BLACK, mBLUE, 'AUTO', 40)	    
     quit_button = Button(490, 430, 100, 50, WHITE, mBLUE, 'QUIT', 40)	
@@ -202,16 +254,33 @@ while 1:
         if event.type == pygame.QUIT: 
             sys.exit()
 
-        if left_button.draw(screen):
-            if choose == chooselist[0] :
-                choose = 1
-            elif choose == chooselist[1] :
-                choose = 0
-        elif right_button.draw(screen):
-            if choose == chooselist[0] :
-                choose = 1
-            elif choose == chooselist[1] :
-                choose = 0
+        if size == 2:
+            if left_button.draw(screen):
+                if choose == chooselist[0] :
+                    choose = chooselist[1]
+                elif choose == chooselist[1] :
+                    choose = chooselist[0]
+            elif right_button.draw(screen):
+                if choose == chooselist[0] :
+                    choose = chooselist[1]
+                elif choose == chooselist[1] :
+                    choose = chooselist[0]
+
+        if size == 3:
+            if left_button.draw(screen):
+                if choose == chooselist[0] :
+                    choose = chooselist[2]
+                elif choose == chooselist[1] :
+                    choose = chooselist[0]
+                elif choose == chooselist[2] :
+                    choose = chooselist[1]
+            if right_button.draw(screen):
+                if choose == chooselist[0] :
+                    choose = chooselist[1]
+                elif choose == chooselist[1] :
+                    choose = chooselist[2]
+                elif choose == chooselist[2] :
+                    choose = chooselist[0]
 
         if choose == chooselist[0] :
             if play_button.is_pressed(mouse_pos, mouse_pressed):
@@ -226,6 +295,13 @@ while 1:
                 player2.anoneani()
                 anone.play()
                 score_value += 1
+
+        elif choose == chooselist[2] :
+             if play_button.is_pressed(mouse_pos, mouse_pressed):
+                auto = False
+                player3.nyanani()
+                nyan.play()
+                score_value += 1
         
         if replay_button.is_pressed(mouse_pos, mouse_pressed):
             if auto == False :	
@@ -239,8 +315,11 @@ while 1:
     if auto :
         loop()			
 
-    if score_value >= 10:
-        chooselist=[0, 1]
+    if score_value >= 69:
+        chooselist=[0, 1, 2]    
+
+    elif score_value >= 10:
+        chooselist=[0, 1]    
 
     screen.fill(color)
     if choose == 0 :
@@ -249,6 +328,9 @@ while 1:
     elif choose == 1 :
         moving_sprites2.draw(screen)
         moving_sprites2.update(0.25)
+    elif choose == 2 :
+        moving_sprites3.draw(screen)
+        moving_sprites3.update(0.25)
     # screen.blit(test, testrect)
 
     screen.blit(leftb, (25, 220))
